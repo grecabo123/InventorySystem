@@ -1,13 +1,31 @@
 import React from 'react'
-import { Link, Redirect, Route, Switch } from 'react-router-dom/cjs/react-router-dom.min'
+import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import AdminRoutes from '../../routes/AdminRoutes'
 import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcComboChart, FcOk, FcBookmark } from 'react-icons/fc'
 import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaStore, FaUserAlt, FaUsers } from 'react-icons/fa'
 import { HiOutlineX } from "react-icons/hi";
 import { BiLogOut } from 'react-icons/bi'
 import UserRoutes from '../../routes/UserRoutes'
+import axios from 'axios'
 
 function User() {
+
+    const history = useHistory();
+    
+
+    const Logout = () => {
+        axios.post(`/api/logout`).then(res => {
+            if (res.data.status === 200) {
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('auth_id');
+                localStorage.removeItem('auth_name');
+                swal('Success', res.data.message, 'success');
+                history.push('/');
+            }
+        });
+    }
+    
+
     return (
         <>
             <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
@@ -47,7 +65,7 @@ function User() {
                     <li class="nav-item"><Link class="nav-link" to="/user/logs">
                         <FaDesktop className='nav-icon' /> Activity Logs</Link></li>
 
-                    <li class="nav-item mt-auto"><a class="nav-link nav-link-danger fw-bold text-danger" target="_top">
+                    <li class="nav-item mt-auto" onClick={Logout}><a style={{cursor: 'pointer'}} class="nav-link nav-link-danger fw-bold text-danger" target="_top">
                         <BiLogOut className="nav-icon" /> Logout
                     </a></li>
                 </ul>
