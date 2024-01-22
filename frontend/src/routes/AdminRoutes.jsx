@@ -1,3 +1,4 @@
+import Logs from "../components/Admin/pages/Activity/Logs";
 import Dashboard from "../components/Admin/pages/Dashboard/Dashboard";
 import Distribute from "../components/Admin/pages/Distribute/Distribute";
 import Employee from "../components/Admin/pages/Employee/Employee";
@@ -11,6 +12,7 @@ const AdminRoutes = [
     {path: "/admin/store", exact: true, name: "Store", component: Stores},
     {path: "/admin/product", exact: true, name: "Store", component: Product},
     {path: "/admin/distribute", exact: true, name: "Store", component: Distribute},
+    {path: "/admin/logs", exact: true, name: "Store", component: Logs},
 ];
 
 export default AdminRoutes;
