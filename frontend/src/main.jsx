@@ -4,8 +4,9 @@ import App from './App.jsx'
 import './index.css'
 import {BrowserRouter as Router} from 'react-router-dom'
 import { Ripple } from 'primereact/ripple';
+import './App.css'
 
-import '../node_modules/primereact/resources/themes/lara-dark-blue/theme.css';
+import '../node_modules/primereact/resources/themes/viva-dark/theme.css';
 import "../node_modules/primereact/resources/primereact.min.css"; 
 import '../node_modules/primeicons/primeicons.css';
 

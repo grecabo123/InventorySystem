@@ -5,6 +5,8 @@ import Navigation from './Navigation';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+
 
 function Login() {
 
@@ -14,6 +16,8 @@ function Login() {
         error: [],
     });
     const [loading, setLoading] = useState(false);
+    const history = useHistory();
+    
 
     const handleinput = (e) => {
         e.persist();
@@ -31,7 +35,22 @@ function Login() {
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post(`/api/Login`, data).then(res => {
                 if (res.data.status === 200) {
-
+                    // Admin
+                    if (res.data.role === 1) {
+                        localStorage.setItem("auth_token", res.data.token);
+                        localStorage.setItem("auth_id", res.data.id);
+                        localStorage.setItem('auth_name',res.data.name);
+                        swal('Success', res.data.message, 'success')
+                        history.push('/admin');
+                    }
+                    // User
+                    else {
+                        localStorage.setItem("auth_token", res.data.token);
+                        localStorage.setItem("auth_id", res.data.id);
+                        localStorage.setItem('auth_name',res.data.name);
+                        swal('Success', res.data.message, 'success')
+                        history.push('/user');
+                    }
                 }
                 else if (res.data.status === 501) {
                     setLogin({ ...LoginData, error: res.data.error });
@@ -56,7 +75,7 @@ function Login() {
         <div>
             <Navigation />
             <div className="mt-5">
-                <div class="container">
+                <div className="container">
                     <div className="row justify-content-center align-items-center">
                         <div className="col-lg-6">
                             <Card header={bannertext}>
