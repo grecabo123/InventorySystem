@@ -183,13 +183,13 @@ function Employee() {
             status: e.currentTarget.getAttribute('data-status'),
             user_id: e.currentTarget.getAttribute('data-user'),
             email: e.currentTarget.getAttribute('data-email'),                        
-            email: e.currentTarget.getAttribute('data-zipcode'),                        
-            email: e.currentTarget.getAttribute('data-city'),                        
-            email: e.currentTarget.getAttribute('data-streets'),                        
-            email: e.currentTarget.getAttribute('data-region'),                        
-            email: e.currentTarget.getAttribute('data-province'),                        
-            email: e.currentTarget.getAttribute('data-username'),                        
-            email: e.currentTarget.getAttribute('data-brgy_name'),                        
+            zipcode: e.currentTarget.getAttribute('data-zipcode'),                        
+            city: e.currentTarget.getAttribute('data-city'),                        
+            streets: e.currentTarget.getAttribute('data-streets'),                        
+            region: e.currentTarget.getAttribute('data-region'),                        
+            province: e.currentTarget.getAttribute('data-province'),                        
+            username: e.currentTarget.getAttribute('data-username'),                        
+            brgy: e.currentTarget.getAttribute('data-brgy_name'),                        
         });
     }
 
