@@ -70,7 +70,7 @@ function Admin() {
                     <li class="nav-item"><Link class="nav-link" to="/admin/logs">
                         <FaDesktop className='nav-icon' /> Activity Logs</Link></li>
 
-                    <li onClick={Logout} class="nav-item mt-auto"><a class="nav-link nav-link-danger fw-bold text-danger" target="_top">
+                    <li onClick={Logout} style={{ cursor: "pointer" }} class="nav-item mt-auto"><a class="nav-link nav-link-danger fw-bold text-danger" target="_top">
                         <BiLogOut className="nav-icon" /> Logout
                     </a></li>
                 </ul>
