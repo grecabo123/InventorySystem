@@ -46,6 +46,7 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function() {
             "role"          =>      auth()->user()->role,
         ],200);
     });
+    Route::get('StoreDetails/{id}',[UserController::class, 'StoreDetails']);
     Route::get('MonitorStocks/{id}',[UserController::class, 'MonitorStocks']);
     Route::get('ProductMonitor/{id}',[UserController::class, 'ProductMonitor']);
     Route::post('AddEmployee',[UserController::class, 'AddEmployee']);
@@ -54,7 +55,9 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function() {
     Route::get('ProductStoreData/{id}',[UserController::class, 'ProductStoreData']);
     Route::put('TransferBranch',[UserController::class, 'TransferBranch']);
     Route::get('GetStoreList/{id}',[UserController::class, 'GetStoreList']);
-
+    Route::get('ProductMonitorList/{id}',[UserController::class, 'ProductMonitorListFrom']);
+    Route::get('ProductReceived/{id}',[UserController::class, 'ProductReceived']);
+    Route::put('ReceiveApproved',[UserController::class, 'ReceiveApproved']);
 }); 
 
 

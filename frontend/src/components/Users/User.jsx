@@ -1,16 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import AdminRoutes from '../../routes/AdminRoutes'
-import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcComboChart, FcOk, FcBookmark, FcInfo, FcShare } from 'react-icons/fc'
+import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcComboChart, FcOk, FcBookmark, FcInfo, FcShare, FcDownload, FcDepartment } from 'react-icons/fc'
 import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaStore, FaUserAlt, FaUsers } from 'react-icons/fa'
 import { HiOutlineX } from "react-icons/hi";
 import { BiLogOut } from 'react-icons/bi'
 import UserRoutes from '../../routes/UserRoutes'
 import axios from 'axios'
+import swal from 'sweetalert'
+import { Skeleton } from 'primereact/skeleton'
 
 function User() {
 
     const history = useHistory();
+    const [DetailsStore, setDetails] = useState([]);
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        axios.get(`/api/StoreDetails/${localStorage.getItem('auth_id')}`).then(res => {
+            if(res.data.status === 200) {
+                setDetails(res.data.data);
+            }
+            setLoading(false)
+        }).catch((error) => {
+            if(error.response.status === 500) {
+                swal("Warning",error.response.statusText,'warning');
+            }
+        })
+    },[]);
+
     
 
     const Logout = () => {
@@ -30,7 +48,7 @@ function User() {
         <>
             <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
                 <div class="sidebar-brand d-none d-md-flex">
-                    <h5 className='text-center'> Store <br /> </h5>
+                    <h5 className='text-center'> {loading ? <Skeleton /> : <span>Store {DetailsStore.store_name}</span>} <br /> </h5>
                 </div>
                 <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
                     <li class="nav-item"><a class="nav-link fs-5">
@@ -54,7 +72,14 @@ function User() {
                         <li class="nav-item"><Link class="nav-link" to="/user/monitor"><FcComboChart className='nav-icon text-danger' />Monitoring</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/user/request"><FcBookmark className='nav-icon text-danger' />Request</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/user/sold"><FcOk className='nav-icon text-danger' />Sold</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/user/branch"><FcShare className='nav-icon text-danger' />Branch to Branch</Link></li>
+                    </div>
+                    <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#branch">
+                        <FcDepartment className='nav-icon' />Branch To Branch</a>
+                    </li>
+                    <div class="collapse" id='branch'>
+                        <li class="nav-item"><Link class="nav-link" to="/user/branch"><FcShare className='nav-icon text-danger' />Transfer Product</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/branch/monitor"><FcComboChart className='nav-icon text-danger' />Monitoring</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/branch/receive"><FcDownload className='nav-icon text-danger' />Received Product</Link></li>
                     </div>
 
                     <li class="nav-title">Transaction</li>

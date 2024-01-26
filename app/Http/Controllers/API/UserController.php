@@ -11,11 +11,24 @@ use App\Models\Reports;
 use App\Models\StoreProduct;
 use App\Models\Stores;
 use App\Models\StoresAddress;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     //
+
+    public function StoreDetails($id){
+
+        $data = User::join('tbl_stores','tbl_stores.user_fk','=','users.id')
+            ->where('tbl_stores.user_fk',$id)
+                ->first();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
 
     public function AddEmployee (Request $request){
         $user = Stores::where('user_fk',$request->user_id)->first();
@@ -75,7 +88,6 @@ class UserController extends Controller
         return response()->json([
             "status"            =>          200,
             "data"              =>          $data,
-            "id"                =>          $store_id->id,
         ]);
     }
 
@@ -183,9 +195,81 @@ class UserController extends Controller
             ->orWhereNull('tbl_stores.user_fk')
             ->get();
 
-    return response()->json([
-        "status"            =>          200,
-        "data"              =>          $data,
-    ]);
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
+
+
+    // From User
+    public function ProductMonitorListFrom($id){
+        $store_id = Stores::where('user_fk',$id)->first();
+        $data = BranchToBranch::join('tbl_product as product','product.id','=','tbl_branch_to_branch.product_fk')
+        ->join('tbl_stores as from_store','from_store.id','=','tbl_branch_to_branch.from_store_fk')
+        ->join('tbl_stores as to_store','to_store.id','=','tbl_branch_to_branch.to_store_fk')
+            ->selectRaw('product.product, to_store.store_name, product.model, product.serial_num, tbl_branch_to_branch.quantity')
+                ->where('tbl_branch_to_branch.from_store_fk',$store_id->id)
+                    ->where('tbl_branch_to_branch.status',2)
+                    ->get();
+                
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
+
+    public function ProductReceived($id){
+        $store_id = Stores::where('user_fk',$id)->first();
+        $data = BranchToBranch::join('tbl_product as product','product.id','=','tbl_branch_to_branch.product_fk')
+        ->join('tbl_stores as from_store','from_store.id','=','tbl_branch_to_branch.from_store_fk')
+        ->join('tbl_stores as to_store','to_store.id','=','tbl_branch_to_branch.to_store_fk')
+            ->selectRaw('product.product, from_store.store_name, product.model, product.serial_num, tbl_branch_to_branch.quantity,
+            product.id as product_fk, to_store.id as store_fk,tbl_branch_to_branch.id as branch_id')
+                ->where('tbl_branch_to_branch.to_store_fk',$store_id->id)
+                    ->where('tbl_branch_to_branch.status',2)
+                    ->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
+    public function ReceiveApproved(Request $request){
+        $data = BranchToBranch::find($request->branch_id);  
+        
+        if($data) {
+            $data->status = 1;
+            $data->update();
+            if($request->status == 1){
+                $product_exist = StoreProduct::where('product_fk',$request->product)
+                    ->where('store_fk',$request->store_fk)->first();
+                if($product_exist){
+                    $product_exist->pcs = $product_exist->pcs + $request->pcs;
+                    $product_exist->update();
+                }
+                else{
+                    $store = new StoreProduct;
+                    $store->store_fk = $request->store_fk;
+                    $store->product_fk = $request->product;
+                    $store->pcs = $request->pcs;
+                    $store->status = 1;
+                    $store->save();
+                }
+            }
+            // if status is not ok 
+            else{
+                $reports = new Reports;
+                $reports->status_report = $request->status;
+                $reports->description = $request->desc;
+                $reports->product_fk = $request->product;
+                $reports->store_fk = $request->store_fk;
+                $reports->save();
+            }
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
     }
 }

@@ -39,7 +39,6 @@ function Login() {
                     if (res.data.role === 1) {
                         localStorage.setItem("auth_token", res.data.token);
                         localStorage.setItem("auth_id", res.data.id);
-                        localStorage.setItem('auth_name',res.data.name);
                         swal('Success', res.data.message, 'success')
                         history.push('/admin');
                     }
@@ -47,7 +46,6 @@ function Login() {
                     else {
                         localStorage.setItem("auth_token", res.data.token);
                         localStorage.setItem("auth_id", res.data.id);
-                        localStorage.setItem('auth_name',res.data.name);
                         swal('Success', res.data.message, 'success')
                         history.push('/user');
                     }
