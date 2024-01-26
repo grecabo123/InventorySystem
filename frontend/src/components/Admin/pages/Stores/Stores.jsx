@@ -165,6 +165,7 @@ function Stores() {
             if (res.data.status === 200) {
                 toast.current.show({ severity: "success", summary: `Create Store` + ' ' + data.branch, detail: "Successfully" });
                 document.getElementById('form_reset').reset();
+                getStore();
                 setVisible(false);
             }
         }).catch((error) => {

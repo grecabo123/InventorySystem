@@ -53,7 +53,7 @@ function Admin() {
                         <li class="nav-item"><Link class="nav-link" to="/admin/store"><FcFactory className='nav-icon' /> Create Store</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/admin/pending"><FcLineChart className='nav-icon text-danger' /> Monitoring Product</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/admin/pending"><FcBarChart className='nav-icon text-danger' /> Product Sales</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/pending"><FcInfo className='nav-icon text-danger' /> Transfer Monitor</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/transfer"><FcInfo className='nav-icon text-danger' /> Transfer Monitor</Link></li>
                     </div>
                   
                     <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#product">

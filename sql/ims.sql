@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 22, 2024 at 02:45 AM
+-- Generation Time: Jan 26, 2024 at 03:26 AM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.5
 
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `migrations`
@@ -71,7 +71,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2024_01_18_213524_create_tbl_store_adr_table', 4),
 (10, '2024_01_18_214236_create_tbl_logs_table', 5),
 (11, '2024_01_20_013508_create_tbl_product_table', 6),
-(12, '2024_01_21_172626_create_tbl_employee_table', 7);
+(12, '2024_01_21_172626_create_tbl_employee_table', 7),
+(13, '2024_01_24_154758_create_tbl_stor_product_table', 8),
+(15, '2024_01_24_234959_create_tbl_product_travel_table', 9),
+(16, '2024_01_25_054553_create_tbl_reports_table', 10),
+(17, '2024_01_26_010106_create_tbl_branch_to_branch_table', 11);
 
 -- --------------------------------------------------------
 
@@ -107,16 +111,16 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `personal_access_tokens`
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `created_at`, `updated_at`) VALUES
-(1, 'App\\Models\\User', 1, 'admin@gmail.com_Admin', '779c81dadfcdbe38d630176b327a5c35540b6051152fe414ee92e06458c5dd97', '[\"server:admin\"]', '2024-01-17 22:33:19', '2024-01-17 22:27:12', '2024-01-17 22:33:19'),
-(2, 'App\\Models\\User', 1, 'admin@gmail.com_Admin', '9e3b1f1b7b3960272881386ec6c1aabf1091d8233c581bb7d92deb17d97328bc', '[\"server:admin\"]', '2024-01-21 18:25:30', '2024-01-18 01:15:59', '2024-01-21 18:25:30'),
-(3, 'App\\Models\\User', 10, 'cepyru@mailinator.com_User', '82629478d4acd8b174e3d6382df458505f350fd6f93ac25d43ad7bafb0e76460', '[\"server:manager\"]', '2024-01-21 17:52:40', '2024-01-20 18:39:08', '2024-01-21 17:52:40');
+(7, 'App\\Models\\User', 1, 'admin@gmail.com_Admin', '1f18409c3eea24df9ba6688eade830c6211f73493df291e8f6fc94e9f17f2a64', '[\"server:admin\"]', '2024-01-25 19:16:01', '2024-01-23 03:37:52', '2024-01-25 19:16:01'),
+(8, 'App\\Models\\User', 8, 'sisi@mailinator.com_User', '51678fc8a32ceb62c4b9933afcb1597e7560ac07eca374445601e2f91fb2f766', '[\"server:manager\"]', '2024-01-25 19:13:50', '2024-01-25 04:54:01', '2024-01-25 19:13:50'),
+(9, 'App\\Models\\User', 10, 'cepyru@mailinator.com_User', '9b5edb437da942579bf47cbb0cdbd714dbede9778b894551b8df54bfd16f2930', '[\"server:manager\"]', '2024-01-25 19:18:00', '2024-01-25 19:16:56', '2024-01-25 19:18:00');
 
 -- --------------------------------------------------------
 
@@ -149,6 +153,37 @@ INSERT INTO `tbl_address` (`id`, `zipcode`, `city`, `streets`, `region`, `provin
 (5, 232, 'zokeze', 'rinuhus', 'daxymaj', 'bysavij', 10, '2024-01-18 01:26:04', '2024-01-18 01:26:04'),
 (6, 2345, 'faquzubat', 'typon', 'honum', 'hasiqajal', 11, '2024-01-18 02:18:27', '2024-01-18 02:18:27'),
 (7, 2112, 'fizonorib', 'rihamaji', 'wiwuka', 'bazenoto', 12, '2024-01-18 17:54:32', '2024-01-18 17:54:32');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_branch_to_branch`
+--
+
+DROP TABLE IF EXISTS `tbl_branch_to_branch`;
+CREATE TABLE IF NOT EXISTS `tbl_branch_to_branch` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `quantity` bigint(20) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `product_fk` bigint(20) UNSIGNED NOT NULL,
+  `from_store_fk` bigint(20) UNSIGNED NOT NULL,
+  `to_store_fk` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tbl_branch_to_branch_product_fk_foreign` (`product_fk`),
+  KEY `tbl_branch_to_branch_from_store_fk_foreign` (`from_store_fk`),
+  KEY `tbl_branch_to_branch_to_store_fk_foreign` (`to_store_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_branch_to_branch`
+--
+
+INSERT INTO `tbl_branch_to_branch` (`id`, `quantity`, `status`, `product_fk`, `from_store_fk`, `to_store_fk`, `created_at`, `updated_at`) VALUES
+(1, 10, 2, 1, 1, 2, '2024-01-25 17:32:20', '2024-01-25 17:32:20'),
+(2, 9, 2, 2, 1, 3, '2024-01-25 17:32:58', '2024-01-25 17:32:58'),
+(3, 8, 2, 3, 1, 2, '2024-01-25 19:07:43', '2024-01-25 19:07:43');
 
 -- --------------------------------------------------------
 
@@ -189,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `tbl_employee` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `employee` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` int(11) NOT NULL DEFAULT '0',
+  `role` int(11) NOT NULL DEFAULT '0' COMMENT '3=employee, 4 = Driver',
   `store_fk` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -202,8 +237,8 @@ CREATE TABLE IF NOT EXISTS `tbl_employee` (
 --
 
 INSERT INTO `tbl_employee` (`id`, `employee`, `email`, `role`, `store_fk`, `created_at`, `updated_at`) VALUES
-(1, 'qahoj@mailinator.com', 'fizoq@mailinator.com', 4, 3, '2024-01-21 10:07:15', '2024-01-21 10:07:15'),
-(2, 'John Lester', 'jyzova@mailinator.com', 3, 3, '2024-01-21 10:09:04', '2024-01-21 10:09:04');
+(1, 'Michael Labon', 'labon@gmail.com', 4, 1, '2024-01-25 04:55:13', '2024-01-25 04:55:13'),
+(2, 'Shiela May', 'may@gmail.com', 3, 1, '2024-01-25 04:55:43', '2024-01-25 04:55:43');
 
 -- --------------------------------------------------------
 
@@ -220,7 +255,7 @@ CREATE TABLE IF NOT EXISTS `tbl_logs` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_logs_user_fk_foreign` (`user_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_logs`
@@ -230,7 +265,22 @@ INSERT INTO `tbl_logs` (`id`, `desc`, `user_fk`, `created_at`, `updated_at`) VAL
 (1, 'Create Store Hannah Fisher', 1, '2024-01-18 13:51:37', '2024-01-18 13:51:37'),
 (2, 'Create Store Leilani Dudley', 1, '2024-01-18 13:55:01', '2024-01-18 13:55:01'),
 (3, 'Register Employee qahoj@mailinator.com', 10, '2024-01-21 10:07:15', '2024-01-21 10:07:15'),
-(4, 'Register Employee John Lester', 10, '2024-01-21 10:09:04', '2024-01-21 10:09:04');
+(4, 'Register Employee John Lester', 10, '2024-01-21 10:09:04', '2024-01-21 10:09:04'),
+(5, 'Distribute Item Electricfan To Hannah Fisher', 1, '2024-01-24 08:03:10', '2024-01-24 08:03:10'),
+(6, 'Distribute Item Electricfan To Hannah Fisher', 1, '2024-01-24 08:07:58', '2024-01-24 08:07:58'),
+(7, 'Distribute Item Electricfan To Hannah Fisher', 1, '2024-01-24 08:08:43', '2024-01-24 08:08:43'),
+(8, 'Distribute Item Electricfan To Hannah Fisher', 1, '2024-01-24 08:08:58', '2024-01-24 08:08:58'),
+(9, 'Distribute Item Electricfan To Hannah Fisher 13', 1, '2024-01-24 16:20:50', '2024-01-24 16:20:50'),
+(10, 'Distribute Item Electricfan To Leilani Dudley 3', 1, '2024-01-24 16:37:33', '2024-01-24 16:37:33'),
+(11, 'Distribute Item Electricfan To Hannah Fisher 1', 1, '2024-01-24 16:39:41', '2024-01-24 16:39:41'),
+(12, 'Create Store Butuan Branch', 1, '2024-01-25 04:49:29', '2024-01-25 04:49:29'),
+(13, 'Create Store Bayugan City', 1, '2024-01-25 04:50:56', '2024-01-25 04:50:56'),
+(14, 'Create Store Cabadbaran City', 1, '2024-01-25 04:51:48', '2024-01-25 04:51:48'),
+(15, 'Register Employee Michael Labon', 8, '2024-01-25 04:55:13', '2024-01-25 04:55:13'),
+(16, 'Register Employee Shiela May', 8, '2024-01-25 04:55:43', '2024-01-25 04:55:43'),
+(17, 'Distribute Item Electricfan To Butuan Branch 20', 1, '2024-01-25 05:07:28', '2024-01-25 05:07:28'),
+(18, 'Distribute Item Yvonne Bradley To Butuan Branch 14', 1, '2024-01-25 05:11:00', '2024-01-25 05:11:00'),
+(19, 'Distribute Item Refrigerator To Butuan Branch 13', 1, '2024-01-25 18:56:26', '2024-01-25 18:56:26');
 
 -- --------------------------------------------------------
 
@@ -253,31 +303,66 @@ CREATE TABLE IF NOT EXISTS `tbl_product` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_product`
 --
 
 INSERT INTO `tbl_product` (`id`, `product`, `brand`, `model`, `image`, `description`, `serial_num`, `quantity`, `price`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Electricfan', 'Camel', 'ES-9535T', 'Uploads/Files/c6c28e619941ed92f1dd4bc5c8467504.jpg', 'Voluptas est alias', '30961299', 30, 23100.00, 1, '2024-01-20 06:41:58', '2024-01-20 17:40:41');
+(1, 'Electricfan Power', 'Pensonic', 'FA4#35G', 'Uploads/Files/2513da7f8fb72d7e70d5a3a889a8e44f.jpg', 'Good Product', '#52346F3124', 30, 14000.00, 1, '2024-01-25 05:00:41', '2024-01-25 19:01:28'),
+(2, 'Yvonne Bradley', 'Powers', 'India Brew', 'Uploads/Files/a288482e681464ebc2ae2839ca2429ba.jpeg', 'Velit dignissimos ul', '#1358AD32', 37, 21000.00, 1, '2024-01-25 05:06:07', '2024-01-25 05:11:00'),
+(3, 'Refrigerator', 'Pensonic', 'Sample', 'Uploads/Files/eec58487b5ba23e825844480212185c7.jpg', 'Good Quality', 'F3215412', 2, 25000.00, 1, '2024-01-25 18:53:28', '2024-01-25 18:56:26');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_product_request`
+-- Table structure for table `tbl_product_travel`
 --
 
-DROP TABLE IF EXISTS `tbl_product_request`;
-CREATE TABLE IF NOT EXISTS `tbl_product_request` (
+DROP TABLE IF EXISTS `tbl_product_travel`;
+CREATE TABLE IF NOT EXISTS `tbl_product_travel` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `quantity` tinyint(4) NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `quantity` bigint(20) NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0',
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `type_of_request` tinyint(4) NOT NULL DEFAULT '0',
+  `product_fk` bigint(20) UNSIGNED NOT NULL,
+  `store_fk` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `tbl_product_travel_product_fk_foreign` (`product_fk`),
+  KEY `tbl_product_travel_store_fk_foreign` (`store_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_product_travel`
+--
+
+INSERT INTO `tbl_product_travel` (`id`, `description`, `quantity`, `status`, `type_of_request`, `product_fk`, `store_fk`, `created_at`, `updated_at`) VALUES
+(1, 'Please Sell ko ani', 20, 1, 2, 1, 1, '2024-01-25 05:07:28', '2024-01-25 05:14:58'),
+(2, 'Good Product', 14, 1, 2, 2, 1, '2024-01-25 05:11:00', '2024-01-25 05:19:18'),
+(3, 'Paki sell ko ani', 13, 1, 2, 3, 1, '2024-01-25 18:56:26', '2024-01-25 19:00:11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_reports`
+--
+
+DROP TABLE IF EXISTS `tbl_reports`;
+CREATE TABLE IF NOT EXISTS `tbl_reports` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `status_report` tinyint(4) NOT NULL DEFAULT '0',
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_fk` bigint(20) UNSIGNED NOT NULL,
+  `store_fk` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tbl_reports_product_fk_foreign` (`product_fk`),
+  KEY `tbl_reports_store_fk_foreign` (`store_fk`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -303,8 +388,9 @@ CREATE TABLE IF NOT EXISTS `tbl_stores` (
 --
 
 INSERT INTO `tbl_stores` (`id`, `store_name`, `image`, `user_fk`, `created_at`, `updated_at`) VALUES
-(2, 'Hannah Fisher', NULL, 12, '2024-01-18 13:51:37', '2024-01-19 07:43:11'),
-(3, 'Leilani Dudley', NULL, 10, '2024-01-18 13:55:01', '2024-01-19 07:43:31');
+(1, 'Butuan Branch', NULL, 8, '2024-01-25 04:49:29', '2024-01-25 04:53:14'),
+(2, 'Bayugan City', NULL, 10, '2024-01-25 04:50:56', '2024-01-25 19:15:50'),
+(3, 'Cabadbaran City', NULL, NULL, '2024-01-25 04:51:48', '2024-01-25 04:51:48');
 
 -- --------------------------------------------------------
 
@@ -326,15 +412,45 @@ CREATE TABLE IF NOT EXISTS `tbl_store_adr` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tbl_store_adr_store_fk_foreign` (`store_fk`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_store_adr`
 --
 
 INSERT INTO `tbl_store_adr` (`id`, `region`, `province`, `city`, `streets`, `brgy`, `zipcode`, `store_fk`, `created_at`, `updated_at`) VALUES
-(1, 'Cassidy Fischer', 'Farrah Coleman', 'Luke Shepherd', 'Cameron Graham', 'Amity Farmer', '231', 2, '2024-01-18 13:51:37', '2024-01-18 13:51:37'),
-(2, 'Fulton French', 'Madeson Conrad', 'Vaughan Terry', 'Azalia Juarez', 'Montana Ochoa', 'Barry Robinson', 3, '2024-01-18 13:55:01', '2024-01-18 13:55:01');
+(1, 'Region 13', 'Agusan Del Norte', 'Butuan City', 'Baan Km3', 'Baan', '8600', 1, '2024-01-25 04:49:29', '2024-01-25 04:49:29'),
+(2, 'Region 10', 'Bayugan', 'Bayugan City', 'Bayugan', 'Bayugan', '8000', 2, '2024-01-25 04:50:56', '2024-01-25 04:50:56'),
+(3, 'Region 7', 'Agusan Del Sur', 'Butuan City', 'Cabadbaran City', 'Cabadbaran City', '8100', 3, '2024-01-25 04:51:48', '2024-01-25 04:51:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_stor_product`
+--
+
+DROP TABLE IF EXISTS `tbl_stor_product`;
+CREATE TABLE IF NOT EXISTS `tbl_stor_product` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `store_fk` bigint(20) UNSIGNED NOT NULL,
+  `product_fk` bigint(20) UNSIGNED NOT NULL,
+  `pcs` bigint(20) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tbl_stor_product_store_fk_foreign` (`store_fk`),
+  KEY `tbl_stor_product_product_fk_foreign` (`product_fk`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_stor_product`
+--
+
+INSERT INTO `tbl_stor_product` (`id`, `store_fk`, `product_fk`, `pcs`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 10, 1, '2024-01-25 05:14:58', '2024-01-25 17:32:20'),
+(2, 1, 2, 5, 1, '2024-01-25 05:19:18', '2024-01-25 17:32:58'),
+(3, 1, 3, 5, 1, '2024-01-25 19:00:11', '2024-01-25 19:07:43');
 
 -- --------------------------------------------------------
 
@@ -385,6 +501,14 @@ ALTER TABLE `tbl_address`
   ADD CONSTRAINT `tbl_address_ibfk_1` FOREIGN KEY (`user_adr_fk`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `tbl_branch_to_branch`
+--
+ALTER TABLE `tbl_branch_to_branch`
+  ADD CONSTRAINT `tbl_branch_to_branch_from_store_fk_foreign` FOREIGN KEY (`from_store_fk`) REFERENCES `tbl_stores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_branch_to_branch_product_fk_foreign` FOREIGN KEY (`product_fk`) REFERENCES `tbl_product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_branch_to_branch_to_store_fk_foreign` FOREIGN KEY (`to_store_fk`) REFERENCES `tbl_stores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `tbl_brgy`
 --
 ALTER TABLE `tbl_brgy`
@@ -403,6 +527,20 @@ ALTER TABLE `tbl_logs`
   ADD CONSTRAINT `tbl_logs_user_fk_foreign` FOREIGN KEY (`user_fk`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `tbl_product_travel`
+--
+ALTER TABLE `tbl_product_travel`
+  ADD CONSTRAINT `tbl_product_travel_product_fk_foreign` FOREIGN KEY (`product_fk`) REFERENCES `tbl_product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_product_travel_store_fk_foreign` FOREIGN KEY (`store_fk`) REFERENCES `tbl_stores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_reports`
+--
+ALTER TABLE `tbl_reports`
+  ADD CONSTRAINT `tbl_reports_product_fk_foreign` FOREIGN KEY (`product_fk`) REFERENCES `tbl_product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_reports_store_fk_foreign` FOREIGN KEY (`store_fk`) REFERENCES `tbl_stores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `tbl_stores`
 --
 ALTER TABLE `tbl_stores`
@@ -413,6 +551,13 @@ ALTER TABLE `tbl_stores`
 --
 ALTER TABLE `tbl_store_adr`
   ADD CONSTRAINT `tbl_store_adr_store_fk_foreign` FOREIGN KEY (`store_fk`) REFERENCES `tbl_stores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_stor_product`
+--
+ALTER TABLE `tbl_stor_product`
+  ADD CONSTRAINT `tbl_stor_product_product_fk_foreign` FOREIGN KEY (`product_fk`) REFERENCES `tbl_product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_stor_product_store_fk_foreign` FOREIGN KEY (`store_fk`) REFERENCES `tbl_stores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

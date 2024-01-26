@@ -9,10 +9,14 @@ use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\ManagerController;
 
 Route::post('Login',[AuthController::class, 'Login']);
-Route::get('Logs/{id}',[LogsController::class, 'Logs']);
 Route::get('Manager', [ManagerController::class, 'Manager']);
 
+Route::get('GetStore',[AdminController::class, 'GetStore']);
+
 // Logs
+Route::get('Logs/{id}',[LogsController::class, 'Logs']);
+
+// Product Monitor
 
 
 // Admin
@@ -23,16 +27,16 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function() {
             "role"          =>      auth()->user()->role,
         ],200);
     });
+    Route::get('TranferMonitor',[AdminController::class, 'TranferMonitor']);
     Route::get('ListEmployee',[AdminController::class ,'ListEmployee']);
     Route::post('AddEmployee',[AdminController::class ,'AddEmployee']);
     Route::put('UpdateStatus',[AdminController::class ,'UpdateStatus']);
     Route::post('CreateStore',[AdminController::class ,'CreateStore']);
-    Route::get('GetStore',[AdminController::class, 'GetStore']);
+    Route::get('ProductDisplay',[AdminController::class, 'ProductDisplay']);
     Route::put('AssignManager',[AdminController::class, 'AssignManager']);
     Route::post('AddProduct',[AdminController::class ,'AddProduct']);
-    Route::get('ProductDisplay',[AdminController::class, 'ProductDisplay']);
     Route::put('UpdateData',[AdminController::class, 'UpdateData']);
-
+    Route::post('DistributeProduct',[AdminController::class, 'DistributeProduct']);
 }); 
 
 Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function() {
@@ -42,9 +46,15 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function() {
             "role"          =>      auth()->user()->role,
         ],200);
     });
-
+    Route::get('MonitorStocks/{id}',[UserController::class, 'MonitorStocks']);
+    Route::get('ProductMonitor/{id}',[UserController::class, 'ProductMonitor']);
     Route::post('AddEmployee',[UserController::class, 'AddEmployee']);
+    Route::put('UpdateStatusProduct',[UserController::class, 'UpdateStatusProduct']);
     Route::get('DisplayEmployee/{id}',[UserController::class, 'DisplayEmployee']);
+    Route::get('ProductStoreData/{id}',[UserController::class, 'ProductStoreData']);
+    Route::put('TransferBranch',[UserController::class, 'TransferBranch']);
+    Route::get('GetStoreList/{id}',[UserController::class, 'GetStoreList']);
+
 }); 
 
 

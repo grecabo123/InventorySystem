@@ -1,4 +1,6 @@
 import Logs from "../components/Users/pages/Activity/Logs";
+import Branch from "../components/Users/pages/Branch/Branch";
+import TransferProduct from "../components/Users/pages/Branch/TransferProduct";
 import Dashboard from "../components/Users/pages/Dashboard/Dashboard";
 import Employee from "../components/Users/pages/Employee/Employee";
 import Monitoring from "../components/Users/pages/Product/Monitoring";
@@ -17,6 +19,8 @@ const UserRoutes = [
     {path: "/user/sold", exact: true, name: "Sold", component: Sold},
     {path: "/user/transfer", exact: true, name: "Transfer", component: Transfer},
     {path: "/user/transaction", exact: true, name: "Transaction", component: Transaction},
+    {path: "/user/branch", exact: true, name: "Transaction", component: Branch},
+    {path: "/user/branch/transfer/refid:id", exact: true, name: "Transaction", component: TransferProduct},
 ];
 
 export default UserRoutes;

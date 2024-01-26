@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Models\AcitivityLogs;
 use App\Models\Products;
+use App\Models\ProductTravel;
+use App\Models\StoreProduct;
 use App\Models\Stores;
 use App\Models\StoresAddress;
 use App\Models\User;
@@ -229,5 +231,55 @@ class AdminController extends Controller
                 "status"            =>          200,
             ]);
         }
+    }
+    public function DistributeProduct(Request $request){
+        $product = Products::find($request->product_id);
+        if($product){
+            $product->quantity = $product->quantity - $request->pcs;
+            $product->update();
+
+            $store_product = ProductTravel::where('product_fk',$request->product_id)
+                ->where('store_fk',$request->store_id)
+                    ->first();
+            if($store_product){
+                $store_product->quantity = $store_product->quantity + $request->pcs;
+                $store_product->update();
+            }
+            else{
+                $new_product = new ProductTravel;
+                $new_product->description = $request->description;
+                $new_product->store_fk = $request->store_id;
+                $new_product->product_fk = $request->product_id;
+                $new_product->quantity = $request->pcs;
+                $new_product->status = 2;
+                $new_product->type_of_request = 2;
+                $new_product->save();
+            }
+            $logs = new AcitivityLogs;
+            $logs->desc = "Distribute Item". " ".$product->product. " "."To". " ".$request->store_name." ".$request->pcs;
+            $logs->user_fk = $request->user_fk;
+            $logs->save();
+
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
+    }
+    public function TranferMonitor(){
+
+        $data = ProductTravel::join('tbl_employee','tbl_employee.store_fk','=','tbl_product_travel.store_fk')
+            ->join('tbl_product','tbl_product.id','=','tbl_product_travel.product_fk')
+                ->join('tbl_stores','tbl_stores.id','=','tbl_product_travel.store_fk')
+                    ->selectRaw('tbl_product_travel.status,tbl_product_travel.type_of_request,tbl_product_travel.description,
+                    tbl_employee.employee,tbl_product.product,tbl_product_travel.created_at,
+                    tbl_stores.store_name,tbl_product_travel.quantity')
+                    ->where('tbl_employee.role', 4)
+                        ->where('tbl_product_travel.status',2)
+                        ->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
     }
 }

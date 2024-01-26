@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import AdminRoutes from '../../routes/AdminRoutes'
-import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcComboChart, FcOk, FcBookmark } from 'react-icons/fc'
+import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcComboChart, FcOk, FcBookmark, FcInfo, FcShare } from 'react-icons/fc'
 import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaStore, FaUserAlt, FaUsers } from 'react-icons/fa'
 import { HiOutlineX } from "react-icons/hi";
 import { BiLogOut } from 'react-icons/bi'
@@ -50,10 +50,11 @@ function User() {
                         <FaStore className='nav-icon' />Product</a>
                     </li>
                     <div class="collapse" id='stores'>
-                        <li class="nav-item"><Link class="nav-link" to="/user/transfer"><FcCheckmark className='nav-icon' />Transfer</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/transfer"><FcInfo className='nav-icon' />Transfer</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/user/monitor"><FcComboChart className='nav-icon text-danger' />Monitoring</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/user/request"><FcBookmark className='nav-icon text-danger' />Request</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/user/sold"><FcOk className='nav-icon text-danger' />Sold</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/user/branch"><FcShare className='nav-icon text-danger' />Branch to Branch</Link></li>
                     </div>
 
                     <li class="nav-title">Transaction</li>

@@ -12,7 +12,8 @@ class LogsController extends Controller
 
     public function Logs($id){
 
-        $data = AcitivityLogs::Where('user_fk',$id)->get();
+        $data = AcitivityLogs::where('user_fk',$id)
+        ->orderBy('created_at','DESC')->get();
 
         return response()->json([
             "status"                =>              200,
