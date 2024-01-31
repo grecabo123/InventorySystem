@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
-    public function AddEmployee (Request $request) {
+    public function RegisterManager (Request $request) {
 
         $validator = Validator::make($request->all(), [
             "fname"                 =>          "required",
-            "mname"                 =>          "required",
+            // "mname"                 =>          "required",
             "lname"                 =>          "required",
             "email"                 =>          "required|unique:users,email|email",
             "username"              =>          "required",
@@ -240,6 +240,7 @@ class AdminController extends Controller
 
             $store_product = ProductTravel::where('product_fk',$request->product_id)
                 ->where('store_fk',$request->store_id)
+                ->whereNotIn('status', [1, 3])
                     ->first();
             if($store_product){
                 $store_product->quantity = $store_product->quantity + $request->pcs;

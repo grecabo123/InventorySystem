@@ -5,6 +5,7 @@ import Received from "../components/Users/pages/Branch/Received";
 import TransferProduct from "../components/Users/pages/Branch/TransferProduct";
 import Dashboard from "../components/Users/pages/Dashboard/Dashboard";
 import Employee from "../components/Users/pages/Employee/Employee";
+import Customer from "../components/Users/pages/Form/Customer";
 import Monitoring from "../components/Users/pages/Product/Monitoring";
 import Request from "../components/Users/pages/Product/Request";
 import Sold from "../components/Users/pages/Product/Sold";
@@ -25,6 +26,7 @@ const UserRoutes = [
     {path: "/user/branch/transfer/refid:id", exact: true, name: "Transaction", component: TransferProduct},
     {path: "/user/branch/monitor", exact: true, name: "Transaction", component: MonitorTransfer},
     {path: "/user/branch/receive", exact: true, name: "Transaction", component: Received},
+    {path: "/user/transaction/form:id", exact: true, name: "Transaction", component: Customer},
 ];
 
 export default UserRoutes;

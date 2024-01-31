@@ -130,7 +130,7 @@ function Received() {
             <Card title="Receive Branch To Branch">
                 <Toast ref={toast} />
                 <DataTable value={Data} paginator paginatorLeft rows={9} loading={loading}>
-                    <Column field='store_name' header='Branch'></Column>
+                    <Column field='store_name' header='From Branch'></Column>
                     <Column field='product' header='Product Name'></Column>
                     <Column field='model' header='Product Model'></Column>
                     <Column field='serial_num' header='Serial Num'></Column>

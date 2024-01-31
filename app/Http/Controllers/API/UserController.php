@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\AcitivityLogs;
 use App\Models\BranchToBranch;
 use App\Models\EmployeeData;
+use App\Models\Products;
 use App\Models\ProductTravel;
 use App\Models\Reports;
 use App\Models\StoreProduct;
 use App\Models\Stores;
 use App\Models\StoresAddress;
+use App\Models\TransactionLogs;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -97,15 +99,27 @@ class UserController extends Controller
         if($data){
             $data->status = 1;
             $data->update();
-
             if($request->status == 1){
 
-                $store = new StoreProduct;
-                $store->store_fk = $request->store_fk;
-                $store->product_fk = $request->product;
-                $store->pcs = $request->pcs;
-                $store->status = 1;
-                $store->save();
+                $exist_product = StoreProduct::where('store_fk',$data->store_fk)
+                    ->where('product_fk',$data->product_fk)
+                        ->first();
+
+                if($exist_product){
+                    $exist_product->pcs = $exist_product->pcs + $request->pcs;
+                    $exist_product->update();
+                    return response()->json([
+                        "status"            =>          200, 
+                    ]);
+                }
+                else{
+                    $store = new StoreProduct;
+                    $store->store_fk = $request->store_fk;
+                    $store->product_fk = $request->product;
+                    $store->pcs = $request->pcs;
+                    $store->status = 1;
+                    $store->save();
+                }
             }
             else{
                 $reports = new Reports;
@@ -129,7 +143,7 @@ class UserController extends Controller
             
             $data = StoreProduct::join('tbl_product','tbl_product.id','=','tbl_stor_product.product_fk')
                 ->selectRaw('tbl_stor_product.status,tbl_stor_product.pcs,tbl_product.product,tbl_product.brand,
-                tbl_product.model,tbl_product.serial_num')
+                tbl_product.model,tbl_product.serial_num,tbl_product.price,tbl_product.id')
                     ->where('tbl_stor_product.store_fk',$store_id->id)
                         ->get();
 
@@ -271,5 +285,62 @@ class UserController extends Controller
                 "status"            =>          200,
             ]);
         }
+    }
+
+    public function SubmitForm(Request $request){
+
+        $data = Stores::where('user_fk',$request->user_fk)->first();
+
+        if($data){
+            $product = StoreProduct::where('store_fk',$data->id)
+                ->where('product_fk',$request->product_id)
+                    ->first();
+            
+            if($product){
+                $product->pcs = $product->pcs - $request->quan;
+                $product->status = $product->pcs < 0 ? 0 : 1;
+                $product->update();
+
+                $transaction = new TransactionLogs;
+                $transaction->invoice_id = $request->invoice."-".rand(111,999)."".rand(1111,9999);
+                $transaction->product_name = $request->product_name;
+                $transaction->product_brand = $request->product_brand;
+                $transaction->product_model = $request->product_model;
+                $transaction->product_serial = $request->product_serial;
+                $transaction->price_product = $request->product_price;
+                $transaction->quantity = $request->quan;
+                $transaction->total_price = $request->product_price * $request->quan;
+                $transaction->store_fk = $data->id;
+                $transaction->save();
+
+                $logs = new AcitivityLogs;
+
+                $txt = $request->quan > 1 ? "PCS" : "PC";
+
+                $logs->desc = "Customer "." ".$request->name." "."Bought"." ".$request->product_name." "." ".$request->quan." ".$txt;
+                $logs->user_fk = $request->user_fk;
+                $logs->save();
+                return response()->json([
+                    "status"            =>              200,
+                ]);
+            }
+        }
+    }
+
+    public function TransactionLogs($id){
+        $store = Stores::where('user_fk',$id)->first();
+
+        if($store){
+            $logs = TransactionLogs::where('store_fk',$store->id)->orderBy('created_at','DESC')->get();
+
+            return response()->json([
+                "status"            =>          200,
+                "data"              =>          $logs,
+            ]);
+        }
+    }
+
+    public function Dashboard($id){
+
     }
 }

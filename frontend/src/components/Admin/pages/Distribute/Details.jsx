@@ -62,7 +62,9 @@ function Details(props) {
     const ActionButton = (Product) => {
         return (
             <>
-                <Button className='p-button-sm p-button-info'
+                {
+                    Product.quantity == 0 ? "" : 
+                    <Button className='p-button-sm p-button-info'
                     label='Distribute'
                     data-id={Product.id}
                     data-product_name={Product.product}
@@ -70,6 +72,7 @@ function Details(props) {
                     data-model={Product.model}
                     data-pcs={Product.quantity}
                     onClick={GetTransfer} />
+                }
             </>
         )
     }

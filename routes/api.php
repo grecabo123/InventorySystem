@@ -7,6 +7,7 @@ use App\Http\Controllers\API\LogsController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\ManagerController;
+use App\Http\Controllers\API\DashboardController;
 
 Route::post('Login',[AuthController::class, 'Login']);
 Route::get('Manager', [ManagerController::class, 'Manager']);
@@ -29,7 +30,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function() {
     });
     Route::get('TranferMonitor',[AdminController::class, 'TranferMonitor']);
     Route::get('ListEmployee',[AdminController::class ,'ListEmployee']);
-    Route::post('AddEmployee',[AdminController::class ,'AddEmployee']);
+    Route::post('RegisterManager',[AdminController::class ,'RegisterManager']);
     Route::put('UpdateStatus',[AdminController::class ,'UpdateStatus']);
     Route::post('CreateStore',[AdminController::class ,'CreateStore']);
     Route::get('ProductDisplay',[AdminController::class, 'ProductDisplay']);
@@ -37,6 +38,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function() {
     Route::post('AddProduct',[AdminController::class ,'AddProduct']);
     Route::put('UpdateData',[AdminController::class, 'UpdateData']);
     Route::post('DistributeProduct',[AdminController::class, 'DistributeProduct']);
+    Route::get('AllData',[DashboardController::class, 'AllData']);
 }); 
 
 Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function() {
@@ -58,6 +60,9 @@ Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function() {
     Route::get('ProductMonitorList/{id}',[UserController::class, 'ProductMonitorListFrom']);
     Route::get('ProductReceived/{id}',[UserController::class, 'ProductReceived']);
     Route::put('ReceiveApproved',[UserController::class, 'ReceiveApproved']);
+    Route::put('SubmitForm',[UserController::class, 'SubmitForm']);
+    Route::get('TransactionLogs/{id}',[UserController::class, 'TransactionLogs']);
+    Route::get('Dashboard/{id}',[UserController::class, 'Dashboard']);
 }); 
 
 

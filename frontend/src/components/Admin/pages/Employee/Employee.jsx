@@ -102,7 +102,7 @@ function Employee() {
             role: categoryid,
         };
 
-        axios.post(`/api/AddEmployee`,data).then(res => {
+        axios.post(`/api/RegisterManager`,data).then(res => {
             if(res.data.status === 200) {
                 FetchData();
                 toast.current.show({severity: "success", summary: "Added Employee", detail: "Successfully"});
