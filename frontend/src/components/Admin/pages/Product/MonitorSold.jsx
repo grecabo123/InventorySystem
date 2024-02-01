@@ -37,7 +37,7 @@ function MonitorSold(data_id) {
         labels: product_name,
         datasets: [
             {
-                label: 'Product Current Price',
+                label: 'Product Name & Total Amount',
                 data: amount,
                 borderWidth: 1
             }
