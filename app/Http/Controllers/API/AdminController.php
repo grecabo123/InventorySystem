@@ -283,4 +283,41 @@ class AdminController extends Controller
             "data"              =>          $data,
         ]);
     }
+
+    public function AccountUpdate(Request $request){
+
+        $user_find = User::find($request->user_id);
+        $brgy = Barangay::where('user_brgy_fk',$request->user_id)->first();
+        $address = Address::where('user_adr_fk',$request->user_id)->first();
+
+        if($user_find && $brgy && $address){
+            $user_find->first_name = $request->fname;
+            $user_find->middle_name = $request->mname;
+            $user_find->last_name = $request->lname;
+            $user_find->email = $request->email;
+            $user_find->username = $request->username;
+            $user_find->password = Hash::make($request->password);
+            $user_find->update();
+
+            $brgy->brgy_name = $request->brgy;
+            $brgy->update();
+
+            $address->zipcode = $request->zip;
+            $address->city = $request->city;
+            $address->streets = $request->street;
+            $address->region = $request->region;
+            $address->province = $request->province;
+            $address->update();
+
+            $logs = new AcitivityLogs;
+            $logs->desc = "Account Updated"." ".$request->email;
+            $logs->user_fk = $request->user_fk;
+            $logs->save();
+
+            return response()->json([
+                "status"                =>          200,
+            ]);
+
+        }
+    }
 }

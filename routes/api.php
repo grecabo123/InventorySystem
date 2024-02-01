@@ -43,7 +43,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function() {
     Route::get('ListofSoldItem/{id}',[DashboardController::class, 'ListofSoldItem']);
     Route::get('ListofSoldItemGroup/{id}',[DashboardController::class, 'ListofSoldItemGroup']);
     Route::get('ListofEmployee/{id}',[DashboardController::class, 'ListofEmployee']);
-    // Route::get('Listof/{id}',[DashboardController::class, 'ListofEmployee']);
+    Route::put('AccountUpdate',[AdminController::class, 'AccountUpdate']);
 }); 
 
 Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function() {

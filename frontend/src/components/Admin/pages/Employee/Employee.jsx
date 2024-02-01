@@ -37,6 +37,7 @@ function Employee() {
         city: "",
         status: "",
         user_id: "",
+        user_fk: "",
     });
     const [Add, setAdd] = useState({
         fname: "",
@@ -161,6 +162,9 @@ function Employee() {
                 data-province={ListData.province}
                 data-username={ListData.username}
                 data-brgy_name={ListData.brgy_name}
+                data-fname={ListData.first_name}
+                data-mname={ListData.middle_name}
+                data-lname={ListData.last_name}
 
                 />
 
@@ -181,15 +185,19 @@ function Employee() {
         setIncidate({
             indicator: e.currentTarget.getAttribute('data-indicator'),
             status: e.currentTarget.getAttribute('data-status'),
-            user_id: e.currentTarget.getAttribute('data-user'),
+            user_id: e.currentTarget.getAttribute('data-id'),
             email: e.currentTarget.getAttribute('data-email'),                        
-            zipcode: e.currentTarget.getAttribute('data-zipcode'),                        
+            zip: e.currentTarget.getAttribute('data-zipcode'),                        
             city: e.currentTarget.getAttribute('data-city'),                        
-            streets: e.currentTarget.getAttribute('data-streets'),                        
+            street: e.currentTarget.getAttribute('data-streets'),                        
             region: e.currentTarget.getAttribute('data-region'),                        
             province: e.currentTarget.getAttribute('data-province'),                        
             username: e.currentTarget.getAttribute('data-username'),                        
             brgy: e.currentTarget.getAttribute('data-brgy_name'),                        
+            fname: e.currentTarget.getAttribute('data-fname'),                        
+            mname: e.currentTarget.getAttribute('data-mname'),                        
+            lname: e.currentTarget.getAttribute('data-lname'),
+            user_fk: localStorage.getItem('auth_id'),                        
         });
     }
 
@@ -213,6 +221,34 @@ function Employee() {
             }
         })
     }
+
+    const handleupdate = (e) => {
+        e.persist();
+        setIncidate({...Indicate, [e.target.name] : e.target.value});
+    }
+
+    const UpdateData = (e) => {
+        e.preventDefault();
+
+        const data = Indicate;
+
+        axios.put(`/api/AccountUpdate`,data).then(res => {
+            if(res.data.status === 200) {
+                toast.current.show({
+                    severity: "success",
+                    summary: "Update Data",
+                    detail: "Successfully",
+                })
+                setVisibledetails(false)
+                FetchData();
+                document.getElementById('reset').reset();
+            }
+        }).catch((error) => {
+            if(error.response.status === 500) {
+                swal("Warning",error.response.statusText,'warning');
+            }
+        })
+    } 
 
     const Category = [
         {label: "Manager", value: 2},
@@ -325,7 +361,87 @@ function Employee() {
                 {
                     Indicate.indicator == 1 
                     ?
-                    <form></form>
+                    <form onSubmit={UpdateData} id='reset'>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    First Name
+                                </label>
+                                <InputText className='w-100 p-inputtext-sm' onChange={handleupdate} value={Indicate.fname} name='fname' />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Middle Name
+                                </label>
+                                <InputText onChange={handleupdate} className='w-100 p-inputtext-sm' value={Indicate.mname} name='mname' />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Last Name
+                                </label>
+                                <InputText onChange={handleupdate} className='w-100 p-inputtext-sm' name='lname' value={Indicate.lname} />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Email
+                                </label>
+                                <InputText type='email' keyfilter={'email'} onChange={handleupdate} className='w-100 p-inputtext-sm' value={Indicate.email} name='email' />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Username
+                                </label>
+                                <InputText className='w-100 p-inputtext-sm' onChange={handleupdate} value={Indicate.username} name='username' />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Category
+                                </label>
+                                <Dropdown options={Category} value={categoryid} onChange={(e) => setCategory(e.target.value)} className='w-100 p-inputtext-sm' placeholder='Category' />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Region
+                                </label>
+                                <InputText className='w-100 p-inputtext-sm' name='region' value={Indicate.region}  onChange={handleupdate} />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Province
+                                </label>
+                                <InputText className='w-100 p-inputtext-sm' name='province' value={Indicate.province} onChange={handleupdate} />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    City
+                                </label>
+                                <InputText className='w-100 p-inputtext-sm' name='city' value={Indicate.city} onChange={handleupdate} />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Street
+                                </label>
+                                <InputText onChange={handleupdate} className='w-100 p-inputtext-sm' value={Indicate.street} name='street' />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Barangay
+                                </label>
+                                <InputText onChange={handleupdate} className='w-100 p-inputtext-sm' name='brgy' value={Indicate.brgy} />
+                            </div>
+                            <div className="col-lg-6 mb-3">
+                                <label htmlFor="" className="form-label">
+                                    Zip Code
+                                </label>
+                                <InputText keyfilter={'pint'} onChange={handleupdate} className='w-100 p-inputtext-sm' value={Indicate.zip} name='zip' />
+                            </div>
+                        </div>
+                        <div className="mt-3 d-flex justify-content-end">
+                            <Button loading={loadingbtn} className='p-button-sm p-button-success' label='Update' />
+                        </div>
+                    </div>
+                </form>
                     :
                    <>
                      <p>Would you like to {Indicate.status == 1 ? "Deactivate" : "Activate"} this account?</p>
