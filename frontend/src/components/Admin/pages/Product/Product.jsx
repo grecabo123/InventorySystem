@@ -130,6 +130,15 @@ function Product() {
         )
     }
 
+    const ProductImage = (ProductStored) => {
+        return (
+            <>
+                <Image src={`http://127.0.0.1:8000/${ProductStored.image}`} width='50' preview />
+
+            </>
+        )
+    }
+
     const ActionBtn = (ProductStored) => {
         return (
             <>
@@ -189,6 +198,7 @@ function Product() {
                     <Button onClick={AddProductModal} className='p-button-info p-button-sm' label='Add Product' icon={PrimeIcons.PLUS} />
                 </div>
                 <DataTable value={ProductStored} loading={loading} rows={8} paginator paginatorLeft>
+                    <Column field='image' body={ProductImage} header="Image"></Column>
                     <Column field='product' header="Product Name"></Column>
                     <Column field='model' header="Model"></Column>
                     <Column field='serial_num' header="Serial Number"></Column>
@@ -219,7 +229,7 @@ function Product() {
                                 <label htmlFor="" className="form-label">
                                     Model
                                 </label>
-                                <InputText className='w-100' name='product' value={EditData.model} onChange={updatechange} />
+                                <InputText className='w-100' name='model' value={EditData.model} onChange={updatechange} />
                             </div>
                             <div className="col-lg-12 mb-2">
                                 <label htmlFor="" className="form-label">

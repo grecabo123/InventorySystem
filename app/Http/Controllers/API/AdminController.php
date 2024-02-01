@@ -208,7 +208,7 @@ class AdminController extends Controller
     }
 
     public function ProductDisplay() {
-        $data = Products::all();
+        $data = Products::orderBy('product','ASC')->get();
 
         return response()->json([
             "status"                =>          200,
@@ -318,6 +318,24 @@ class AdminController extends Controller
                 "status"                =>          200,
             ]);
 
+        }
+    }
+
+    public function StoreUpdate(Request $request){
+        $store = Stores::find($request->store_id);
+        $store_adr = StoresAddress::where('store_fk',$request->store_id)->first();
+
+        if($store && $store_adr){
+            $store->store_name = $request->store;
+            $store->update();
+
+            $store_adr->province = $request->province;
+            $store_adr->city = $request->city;
+            $store_adr->update();
+
+            return response()->json([
+                "status"            =>          200,
+            ]);
         }
     }
 }

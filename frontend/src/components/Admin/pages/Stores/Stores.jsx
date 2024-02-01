@@ -16,6 +16,14 @@ import { Badge } from 'primereact/badge'
 
 function Stores() {
 
+    const [StoreDetails, setStoreDetails] = useState({
+        store: "",
+        province: "",
+        city: "",
+        store_id: "",
+        user_fk: "",
+    })
+    const [DetailsVisible, setDetailsVisible] = useState(false);
     const [visible, setVisible] = useState(false);
     const [loading, setloading] = useState(true);
     const [create, setCreate] = useState({
@@ -138,7 +146,10 @@ function Stores() {
         setemailchoose(e.target.value);
     }
 
-
+    const handleUpdate = (e) => {
+        e.persist();
+        setStoreDetails({...StoreDetails, [e.target.name] : e.target.value});
+    }
 
     const handleinput = (e) => {
         e.persist();
@@ -148,6 +159,7 @@ function Stores() {
     const hideModal = () => {
         setVisible(false)
         setassign(false)
+        setDetailsVisible(false)
     }
 
     const CreateStoreData = (e) => {
@@ -195,10 +207,28 @@ function Stores() {
     const ButtonAction = (StoreData) => {
         return (
             <>
-                <Button className='p-button-sm me-2 p-button-info' data-id={StoreData.id} label='Details' />
+                <Button
+                    className='p-button-sm me-2 p-button-info'
+                    data-id={StoreData.id}
+                    label='Details'
+                    data-store={StoreData.store_name}
+                    data-province={StoreData.store_name}
+                    data-city={StoreData.store_name}
+                    onClick={DetailsStore}
+                />
                 <Button className='p-button-sm me-2 p-button-warning' onClick={ActionsStore} data-id={StoreData.id} label='Assign' />
             </>
         )
+    }
+    const DetailsStore = (e) => {
+        setStoreDetails({
+            store: e.currentTarget.getAttribute('data-store'),
+            province: e.currentTarget.getAttribute('data-province'),
+            city: e.currentTarget.getAttribute('data-city'),
+            store_id: e.currentTarget.getAttribute('data-id'),
+            user_fk: localStorage.getItem('auth_id'),
+        })
+        setDetailsVisible(true)
     }
 
     const ActionsStore = (e) => {
@@ -226,6 +256,28 @@ function Stores() {
         }).catch((error) => {
             if (error.response.status === 500) {
                 swal("Warning", error.response.statusText, 'warning');
+            }
+        })
+    }
+
+
+    const UpdateStore = (e) => {
+        e.preventDefault();
+        const data = StoreDetails;
+        axios.put(`/api/StoreUpdate`,data).then(res => {
+            if(res.data.status === 200) {
+                toast.current.show({
+                    severity: "success",
+                    summary: "Store Updated",
+                    detail: "Successfully",
+                });
+                setDetailsVisible(false);
+                document.getElementById('assign').reset();
+                getStore();
+            }
+        }).catch((error) => {
+            if(error.response.status === 500) {
+                swal("Warning",error.response.statusText,'warning')
             }
         })
     }
@@ -350,6 +402,40 @@ function Stores() {
                     </div>
                 </form>
             </Dialog>
+
+
+            {/* Details and Edit */}
+            <Dialog header="Store Details" onHide={hideModal} style={{ width: '50vw' }} maximizable={true} position='top' draggable={false} visible={DetailsVisible}>
+                <form onSubmit={UpdateStore} id='assign'>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12 mb-2">
+                                <label htmlFor="" className="form-label">
+                                    Store Name:
+                                </label>
+                                <InputText className='w-100' name='store' onChange={handleUpdate} value={StoreDetails.store} />
+                            </div>
+                            <div className="col-lg-12 mb-2">
+                                <label htmlFor="" className="form-label">
+                                    Province
+                                </label>
+                                <InputText className='w-100' name='province' onChange={handleUpdate} value={StoreDetails.province} />
+                            </div>
+                            <div className="col-lg-12 mb-2">
+                                <label htmlFor="" className="form-label">
+                                    City
+                                </label>
+                                <InputText className='w-100' name='city' onChange={handleUpdate} value={StoreDetails.city} />
+                            </div>
+                        </div>
+                        <div className="mt-3 d-flex justify-content-end">
+                            <Button className='p-button-success p-button-sm' label='Update' />
+                        </div>
+                    </div>
+                </form>
+            </Dialog>
+
+
         </div>
     )
 }
