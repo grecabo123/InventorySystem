@@ -53,7 +53,6 @@ function Received() {
                 data-product={Data.product_fk}
                 data-store={Data.store_fk}
                 data-pcs={Data.quantity}
-                // data-user_fk={Data.user_fk}
                 data-name={Data.product}
                 onClick={GetUpdate}
                 />

@@ -134,7 +134,9 @@ function Stores() {
         );
     }
 
-
+    const EmailInput = (e) => {
+        setemailchoose(e.target.value);
+    }
 
 
 
@@ -214,16 +216,16 @@ function Stores() {
             store_id: details.id,
         };
         // console.log(data);
-        axios.put(`/api/AssignManager`,data).then(res => {
-            if(res.data.status === 200) {
-                toast.current.show({severity: "success", summary: "Assign Store", detail: "Successfully"});
+        axios.put(`/api/AssignManager`, data).then(res => {
+            if (res.data.status === 200) {
+                toast.current.show({ severity: "success", summary: "Assign Store", detail: "Successfully" });
                 setassign(false);
                 getStore();
-                document.getElementById('assign').reset();      
+                document.getElementById('assign').reset();
             }
         }).catch((error) => {
-            if(error.response.status === 500) {
-                swal("Warning",error.response.statusText,'warning');
+            if (error.response.status === 500) {
+                swal("Warning", error.response.statusText, 'warning');
             }
         })
     }
@@ -310,7 +312,7 @@ function Stores() {
                                 <div className="p-inputgroup">
                                     <Mention placeholder='Type @ to search Name' scrollHeight='400px' rows={1}
                                         className='w-100 p-mention'
-                                        autoResize={true}
+                                        // autoResize={true}
                                         style={{ resize: 'none !important' }}
                                         field="email"
                                         trigger="@"
@@ -319,6 +321,7 @@ function Stores() {
                                         onSearch={onSearch}
                                         suggestions={suggestions}
                                         value={emailchoose}
+                                        onChange={EmailInput}
                                     />
 
                                     <Button
@@ -328,7 +331,7 @@ function Stores() {
                                         icon={PrimeIcons.PLUS} />
                                 </div>
                                 {
-                                    
+
                                     NameTags.map((NameChip, index) => {
                                         return (
                                             <>
