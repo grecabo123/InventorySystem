@@ -100,7 +100,7 @@ function TransferProduct() {
     }
     const handleinput = (e) => {
         setQuan(e.value)
-        if(e.value >= Details.pcs){
+        if(e.value > Details.pcs){
             setError({
                 error: "Exceed Pcs"
             });

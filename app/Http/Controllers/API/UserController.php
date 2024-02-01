@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\AcitivityLogs;
 use App\Models\BranchToBranch;
+use App\Models\CustomerInfo;
 use App\Models\EmployeeData;
 use App\Models\Products;
 use App\Models\ProductTravel;
@@ -313,6 +314,13 @@ class UserController extends Controller
                 $transaction->store_fk = $data->id;
                 $transaction->save();
 
+                $customer = new CustomerInfo;
+                $customer->tbl_transaction = $transaction->id;
+                $customer->customer_name = $request->name;
+                $customer->customer_address = $request->address;
+                $customer->description = $request->desc;
+                $customer->save();
+
                 $logs = new AcitivityLogs;
 
                 $txt = $request->quan > 1 ? "PCS" : "PC";
@@ -342,5 +350,29 @@ class UserController extends Controller
 
     public function Dashboard($id){
 
+        $store_fk = Stores::where('user_fk',$id)->first();
+
+
+        if($store_fk){
+            $total_earn = TransactionLogs::selectRaw('sum(total_price) as total')
+                ->where('store_fk',$store_fk->id)
+                    ->get();
+
+            $product = StoreProduct::where('store_fk',$store_fk->id)->get();
+            $stock = StoreProduct::where('store_fk',$store_fk->id)
+                ->where('pcs', '>',0)
+                    ->get();
+            $out = StoreProduct::where('store_fk',$store_fk->id)
+                ->where('pcs', '<=',0)
+                        ->get();
+                    
+            return response()->json([
+                "status"                =>          200,
+                "amount"                =>          $total_earn[0]->total,
+                "all"                   =>          $product->count(),
+                "stock"                 =>          $stock->count(),
+                "out"                   =>          $out->count(),
+            ]);
+        }
     }
 }

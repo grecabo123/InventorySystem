@@ -39,6 +39,11 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function() {
     Route::put('UpdateData',[AdminController::class, 'UpdateData']);
     Route::post('DistributeProduct',[AdminController::class, 'DistributeProduct']);
     Route::get('AllData',[DashboardController::class, 'AllData']);
+    Route::get('SalesInformation/{id}',[DashboardController::class, 'SalesInformation']);
+    Route::get('ListofSoldItem/{id}',[DashboardController::class, 'ListofSoldItem']);
+    Route::get('ListofSoldItemGroup/{id}',[DashboardController::class, 'ListofSoldItemGroup']);
+    Route::get('ListofEmployee/{id}',[DashboardController::class, 'ListofEmployee']);
+    // Route::get('Listof/{id}',[DashboardController::class, 'ListofEmployee']);
 }); 
 
 Route::middleware(['auth:sanctum', 'isAPIUser'])->group(function() {

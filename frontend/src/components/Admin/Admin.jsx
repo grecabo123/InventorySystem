@@ -51,8 +51,8 @@ function Admin() {
                     </li>
                     <div class="collapse" id='stores'>
                         <li class="nav-item"><Link class="nav-link" to="/admin/store"><FcFactory className='nav-icon' /> Create Store</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/pending"><FcLineChart className='nav-icon text-danger' /> Monitoring Product</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/pending"><FcBarChart className='nav-icon text-danger' /> Product Sales</Link></li>
+                        {/* <li class="nav-item"><Link class="nav-link" to="/admin/pending"><FcLineChart className='nav-icon text-danger' /> Monitoring Product</Link></li> */}
+                        <li class="nav-item"><Link class="nav-link" to="/admin/sales"><FcBarChart className='nav-icon text-danger' /> Product Sales</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/admin/transfer"><FcInfo className='nav-icon text-danger' /> Transfer Monitor</Link></li>
                     </div>
                   

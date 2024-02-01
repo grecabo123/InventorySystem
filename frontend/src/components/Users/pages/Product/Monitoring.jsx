@@ -50,6 +50,7 @@ function Monitoring() {
                         data-model={Product.model}
                         data-serial={Product.serial_num}
                         data-price={Product.price}
+                        data-pcs={Product.pcs}
                         onClick={GetDataDetails}
                     />
                 </Link>
@@ -65,6 +66,7 @@ function Monitoring() {
         localStorage.setItem('form_product_model', e.currentTarget.getAttribute('data-model'))
         localStorage.setItem('form_product_serial', e.currentTarget.getAttribute('data-serial'))
         localStorage.setItem('form_product_price', e.currentTarget.getAttribute('data-price'))
+        localStorage.setItem('form_product_pcs', e.currentTarget.getAttribute('data-pcs'))
     }
 
     const PriceFormat = (Product) => {

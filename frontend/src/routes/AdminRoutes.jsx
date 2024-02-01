@@ -5,6 +5,8 @@ import Distribute from "../components/Admin/pages/Distribute/Distribute";
 import Employee from "../components/Admin/pages/Employee/Employee";
 import Transfer from "../components/Admin/pages/Monitor/Transfer";
 import Product from "../components/Admin/pages/Product/Product";
+import Sales from "../components/Admin/pages/Product/Sales";
+import SalesInfo from "../components/Admin/pages/Product/SalesInfo";
 import Stores from "../components/Admin/pages/Stores/Stores";
 
 
@@ -16,6 +18,8 @@ const AdminRoutes = [
     {path: "/admin/product", exact: true, name: "Store", component: Product},
     {path: "/admin/distribute", exact: true, name: "Store", component: Distribute},
     {path: "/admin/logs", exact: true, name: "Store", component: Logs},
+    {path: "/admin/sales", exact: true, name: "Store", component: Sales},
+    {path: "/admin/sales/branch=:id", exact: true, name: "Store", component: SalesInfo},
     {path: "/admin/distribute/refid:id", exact: true, name: "Store", component: Details},
 ];
 

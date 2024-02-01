@@ -74,6 +74,7 @@ function Customer() {
         localStorage.removeItem('form_product_model');
         localStorage.removeItem('form_product_serial');
         localStorage.removeItem('form_product_price');
+        localStorage.removeItem('form_product_pcs');
     }
     const header = <>
         <div className="d-flex justify-content-between align-items-center p-3">
@@ -129,9 +130,16 @@ function Customer() {
                             </div>
                             <div className="col-lg-6 mb-2">
                                 <label htmlFor="" className="form-label">
+                                    Number of Products Available
+                                </label>
+                                <InputNumber required className='w-100' readOnly value={localStorage.getItem('form_product_pcs')} />
+                            </div>
+                            <div className="col-lg-6 mb-2">
+                                <label htmlFor="" className="form-label">
                                     Quantity
                                 </label>
-                                <InputNumber className='w-100' onChange={(e) => setpcs(e.value)} />
+                                <InputNumber value={pcs == 0 ? "" : pcs} className='w-100' onChange={(e) => setpcs(e.value)} />
+                                {pcs > localStorage.getItem('form_product_pcs') ? <small className='text-danger'>Exceed Quantity</small> : "" }
                             </div>
                             <div className="col-lg-12 mb-2">
                                 <span>Total Price: {pcs == null ? "" : '₱' +( localStorage.getItem('form_product_price') * pcs).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
@@ -160,7 +168,7 @@ function Customer() {
                                         <InputTextarea className='w-100' rows={5} cols={5} name='description' onChange={handleinput} />
                                     </div>
                                     <div className="mt-3">
-                                        <Button className='p-button-info p-button-sm' label='Submit' />
+                                        <Button disabled={pcs > localStorage.getItem('form_product_pcs') ? true : false  } className='p-button-info p-button-sm' label='Submit' />
                                     </div>
                                 </div>
                             </div>
